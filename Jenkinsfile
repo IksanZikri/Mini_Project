@@ -2,21 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/kamu-user/ci-cd-demo.git'
+                git 'https://github.com/IksanZikri/Mini_Project.git'
             }
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build('ci-cd-demo-app', './app')
-                }
+                sh 'docker build -t mini-node-app .'
             }
         }
-        stage('Run Docker Compose') {
+        stage('Run Docker Container') {
             steps {
-                sh 'docker-compose up -d'
+                sh 'docker stop mini-node-app || true'
+                sh 'docker rm mini-node-app || true'
+                sh 'docker run -d --name mini-node-app -p 3000:3000 mini-node-app'
             }
         }
     }
